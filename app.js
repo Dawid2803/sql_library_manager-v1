@@ -3,8 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const Sequelize = require('sequelize');
-const models = require('./models');
+//importing sequelize instance created in index 
+const db = require('./models/index');
+const {sequelize} = db;
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -28,13 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'library.db'
-});
 
+//testing connection to db with IIFE
 (async () => {
-  await sequelize.sync({force: true});
   try{
     await sequelize.authenticate();
     console.log('connection succesful');

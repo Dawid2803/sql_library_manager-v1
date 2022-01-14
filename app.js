@@ -3,9 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const Sequelize = require('sequelize');
+const models = require('./models');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+
+
+
 
 var app = express();
 
@@ -21,6 +27,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: 'library.db'
+});
+
+(async () => {
+  await sequelize.sync({force: true});
+  try{
+    await sequelize.authenticate();
+    console.log('connection succesful');
+  }catch(error){
+    console.error('unable to connect: ', error);
+  }  
+})();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

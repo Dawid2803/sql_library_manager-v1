@@ -14,24 +14,28 @@ function asyncHandler(cb){
   }
 }
 
-/* GET home page. */
+/* Redirect home page. */
 router.get('/', asyncHandler(async (req, res) => {
   res.redirect('/books');
   //res.render('index', { title: 'Express' });
 }));
 
+//get books listing from db
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
-  console.log(books);
   res.render('index', { books });
 }));
 
+//create new books row in db
 router.get('/books/new', asyncHandler(async (req, res) => {
-  res.send('new book test');
+  res.render('new-book', { book: {}});
 }));
 
+//create new books row in db
 router.post('/books/new', asyncHandler(async (req, res) => {
-  res.send('new book test');
+  const book = await Book.create(req.body)
+  res.redirect('/books');
+
 }));
 
 router.get('/books/:id', asyncHandler(async (req, res) => {

@@ -26,9 +26,9 @@ router.get('/books', asyncHandler(async (req, res) => {
   res.render('index', { books });
 }));
 
-//create new books row in db
+//get new books view
 router.get('/books/new', asyncHandler(async (req, res) => {
-  res.render('new-book', { book: {}});
+  res.render('new-book', { book: {}, title: "New Book"});
 }));
 
 //create new books row in db
@@ -38,6 +38,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 
 }));
 
+//get book details
 router.get('/books/:id', asyncHandler(async (req, res) => {
   const bookId = req.params.id;
   res.send(bookId);

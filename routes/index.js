@@ -16,11 +16,35 @@ function asyncHandler(cb){
 
 /* GET home page. */
 router.get('/', asyncHandler(async (req, res) => {
-  throw  new Error();
+  res.redirect('/books');
+  //res.render('index', { title: 'Express' });
+}));
+
+router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
   console.log(books);
-  res.json(books)
-  //res.render('index', { title: 'Express' });
+  res.json(books);
+}));
+
+router.get('/books/new', asyncHandler(async (req, res) => {
+  res.send('new book test');
+}));
+
+router.post('/books/new', asyncHandler(async (req, res) => {
+  res.send('new book test');
+}));
+
+router.get('/books/:id', asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+  res.send(bookId);
+}));
+
+router.post('/books/:id', asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+  res.send(bookId);
+}));
+
+router.post('/books/:id/delete', asyncHandler(async (req, res) => {
 }));
 
 module.exports = router;

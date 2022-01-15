@@ -16,6 +16,7 @@ function asyncHandler(cb){
 
 /* GET home page. */
 router.get('/', asyncHandler(async (req, res) => {
+  throw  new Error();
   const books = await Book.findAll();
   console.log(books);
   res.json(books)

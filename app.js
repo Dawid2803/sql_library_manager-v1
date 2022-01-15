@@ -45,19 +45,37 @@ app.use('/users', usersRouter);
 })();
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
+
+// custom 404 error for undefined routes
+app.use((req, res, next) => {
+  const err404 = new Error('Page Not Found');
+  err404.status = 404;
+  err404.message = "Oops looks like the page you were looking for does not exist!";
+  next(err404);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  if(err.status === 404){
+    res.status(err.status);
+    res.render('page-not-found', { err })
+  }else{
+    err.message = err.message || 'Sorry! There was an unexpected error on the server.';
+    err.status = err.status || 500;
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+  
+    console.log("Error message: ",err.message);
+    console.log("Error Status: ", err.status)
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error', { err });
+  }
+
 });
 
 module.exports = app;

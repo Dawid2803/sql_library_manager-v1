@@ -23,7 +23,7 @@ router.get('/', asyncHandler(async (req, res) => {
 router.get('/books', asyncHandler(async (req, res) => {
   const books = await Book.findAll();
   console.log(books);
-  res.json(books);
+  res.render('index', { books });
 }));
 
 router.get('/books/new', asyncHandler(async (req, res) => {

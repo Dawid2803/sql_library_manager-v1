@@ -63,7 +63,8 @@ app.use(function(err, req, res, next) {
   if(err.status === 404){
     res.status(err.status);
     res.render('page-not-found', { err })
-  }else{
+  }
+  else{
     err.message = err.message || 'Sorry! There was an unexpected error on the server.';
     err.status = err.status || 500;
 
